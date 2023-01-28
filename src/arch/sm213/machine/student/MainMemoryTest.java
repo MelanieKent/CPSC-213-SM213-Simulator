@@ -116,7 +116,7 @@ public class MainMemoryTest {
     }
 
     // tests integerToBytes method in 4 cases; one case where integer is 0, one case where
-    // the integer is a small positive numeric value, one where the integer is a large positive numeric value,
+    // the integer is a small positive value, one where the integer is a large positive value,
     // and one where the integer is a negative value
     @Test
     public void testIntegerToBytes() {
