@@ -1,2 +1,2 @@
-# SM213_simulator_cpsc_213
+# cpsc_213_SM213_simulator
 SM213 Simple Machine Simulator for CPSC 213.
