@@ -138,10 +138,11 @@ public class CPU extends AbstractSM213CPU {
 	break;
       case 0x7: // sh? $i,rd ............. 7dii
           // TODO
-            if (insOpImm.get() < 0) { // shr
-                reg.set(insOp0.get(), reg.get(insOp0.get()) >> -insOpImm.get());
-            } else {  // shl
-                reg.set(insOp0.get(), reg.get(insOp0.get()) << insOpImm.get());
+          int s = insOpImm.get();
+            if (s > 0) { // shl
+                reg.set(insOp0.get(), reg.get(insOp0.get()) << s);
+            } else {  // shr
+                reg.set(insOp0.get(), reg.get(insOp0.get()) >> -s);
             }
         break;
       case 0xf: // halt or nop ............. f?--
