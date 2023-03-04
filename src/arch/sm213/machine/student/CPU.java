@@ -136,25 +136,35 @@ public class CPU extends AbstractSM213CPU {
 	    throw new InvalidInstructionException();
 	}
 	break;
-      case 0x7: // sh? $i,rd ............. 7dii
-          // TODO
-          int s = insOpImm.get();
-            if (s > 0) { // shl
-                reg.set(insOp0.get(), reg.get(insOp0.get()) << s);
-            } else {  // shr
-                reg.set(insOp0.get(), reg.get(insOp0.get()) >> -s);
+        case 0x8: // br a .................. 8-pp  (a = pc + pp * 2)
+            pc.set(2*insOpImm.get() + pc.get());
+            break;
+        case 0x9: // beq rs, a ............. 9rpp  (a = pc + pp * 2)
+            if (reg.get(insOp0.get()) == 0) {
+                pc.set(2*insOpImm.get() + pc.get());
             }
-        break;
-      case 0xf: // halt or nop ............. f?--
-	if (insOp0.get() == 0)
-	  // halt .......................... f0--
-	  throw new MachineHaltException();
-	else if (insOp0.getUnsigned() == 0xf)
-	  // nop ........................... ff--
-	  break;
-        break;
-      default:
-        throw new InvalidInstructionException();
+            break;
+        case 0xa: // bg rs, a .............. arpp  (a = pc + pp * 2)
+            if (reg.get(insOp0.get()) > 0) {
+                pc.set(pc.get() + 2*insOpImm.get());
+            }
+            break;
+        case 0xb: // j i ................... b--- iiii iiii
+            pc.set(insOpExt.get());
+            break;
+        case 0xc: // j o(rr) ............... crpp  (pp = o / 2)
+            pc.set(reg.get(insOp0.get()) + insOpImm.getUnsigned()*2);
+            break;
+        case 0xf: // halt or nop ............. f?--
+            if (insOp0.get() == 0)
+                // halt .......................... f0--
+                throw new MachineHaltException();
+            else if (insOp0.getUnsigned() == 0xf)
+                // nop ........................... ff--
+                break;
+            break;
+        default:
+            throw new InvalidInstructionException();
     }
   }
 }
